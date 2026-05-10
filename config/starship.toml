@@ -1,0 +1,182 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[](color_bg1)\
+$battery\
+$sudo\
+$username\
+[](bg:color_bg2 fg:color_bg1)\
+$directory\
+[](fg:color_bg2 bg:color_bg3)\
+$git_branch\
+$git_state\
+$git_status\
+[](fg:color_bg3 bg:color_bg4)\
+$c\
+$rust\
+$golang\
+$nodejs\
+$php\
+$java\
+$haskell\
+$python\
+$elixir\
+$ruby\
+[](fg:color_bg4 bg:color_bg5)\
+$time\
+[](fg:color_bg5 bg:color_lightgrey)\
+$cmd_duration\
+$character\
+[ ](fg:color_lightgrey)"""
+
+palette = 'nord_aurora'
+
+[palettes.nord_aurora]
+color_fg0 = '#2E3440'
+color_fg1 = '#3B4252'
+color_fg2 = '#434C5E'
+color_fg3 = '#4C566A'
+color_bg1 = '#BF616A'
+color_bg2 = '#D08770'
+color_bg3 = '#EBCB8B'
+color_bg4 = '#A3BE8C'
+color_bg5 = '#B48EAD'
+color_blue = '#458588'
+color_aqua = '#689d6a'
+color_green = '#A3BEBC'
+color_orange = '#d65d0e'
+color_purple = '#b16286'
+color_red = '#cc241d'
+color_yellow = '#d79921'
+color_lightgrey = '#D8DEE9'
+
+[battery] 
+format = '[$symbol$percentage ]($style)'
+full_symbol = '🗰  '
+charging_symbol = '🗲 '
+discharging_symbol = '🗱  '
+empty_symbol = '🕱  '
+
+[[battery.display]]
+threshold = 25
+style = 'bold color_red bg:color_bg1'
+
+[[battery.display]]
+threshold = 50
+style = 'bold color_orange bg:color_bg1'
+
+[[battery.display]]
+threshold = 75
+style = 'bold color_yellow bg:color_bg1'
+
+[[battery.display]]
+threshold = 99
+style = 'bold color_green bg:color_bg1'
+
+[sudo]
+format = '[$symbol ]($style)'
+symbol = '👁 '
+style = 'bold color_blue bg:color_bg1'
+disabled = false
+
+[username]
+show_always = true
+style_user = "bg:color_bg1 fg:color_fg0"
+style_root = "bg:color_bg1 fg:color_fg0"
+format = '[ $user ]($style)'
+
+[directory]
+style = "fg:color_fg0 bg:color_bg2"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "🖹 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+"Projects" = '🖬 '
+"Videos" = "📽 "
+"Information" = "🛈 "
+"Desktop" = "🗔 "
+
+[git_branch]
+symbol = ""
+style = "color_fg1 bg:color_bg3"
+format = '[ $symbol $branch ]($style)'
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total) ]($style)\)'
+style = 'color_fg0 bg:color_bg3'
+
+[git_status]
+style = "color_fg1 bg:color_bg3"
+format = '[($all_status$ahead_behind )]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:color_bg4"
+format = '[[ $symbol( $version) ](fg:color_fg1 bg:color_bg4)]($style)'
+
+[c]
+symbol = " "
+style = "bg:color_bg4"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg4)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:color_bg4"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg4)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:color_bg4"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg4)]($style)'
+
+[php]
+symbol = ""
+style = "bg:color_bg4"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg4)]($style)'
+
+[java]
+symbol = " "
+style = "bg:color_bg4"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg4)]($style)'
+
+[haskell]
+symbol = ""
+style = "bg:color_bg4"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg4)]($style)'
+
+[python]
+symbol = ""
+style = "bg:color_bg4"
+format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_bg4)]($style)'
+
+[ruby]
+style = "color_red bg:color_bg4"
+format = "[ $symbol( [$version](bold $style)) ]($style)"
+
+[time]
+disabled = false
+time_format = "%R"
+style = "color_fg0 bg:color_bg5"
+format = '[  $time ]($style)'
+
+[line_break]
+disabled = false
+
+[cmd_duration]
+format = '[ took [$duration](bold color_yellow $style)](color_fg1 $style)'
+style = 'bg:color_lightgrey'
+
+[character]
+disabled = false
+success_symbol = '[🖒](bold fg:color_green bg:color_lightgrey)'
+error_symbol = '[🖓](bold fg:color_red bg:color_lightgrey)'
+vimcmd_symbol = '[](bold fg:color_green bg:color_lightgrey)'
+vimcmd_replace_one_symbol = '[](bold fg:color_purple bg:color_lightgrey)'
+vimcmd_replace_symbol = '[](bold fg:color_purple bg:color_lightgrey)'
+vimcmd_visual_symbol = '[](bold fg:color_yellow bg:color_lightgrey)'
+format = '[ $symbol ](bg:color_lightgrey)'
