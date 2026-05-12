@@ -103,7 +103,7 @@ fi
 FISH_CONF="$HOME/.config/fish/config.fish"
 mkdir -p $(dirname $FISH_CONF)
 
-cat <<EOF >> $FISH_CONF
+cat <<EOF > $FISH_CONF
 # Omarchy-style aliases
 alias ff="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}'" # [10]
 alias c="opencode" # Alias for OpenCode AI agent [14]
@@ -119,6 +119,38 @@ starship init fish | source
 # Fastfetch on shell start [6]
 fastfetch
 EOF
+
+# Copy Git configuration
+GIT_CONFIG_SRC="$SCRIPT_DIR/../config/git"
+GIT_CONFIG_DEST="$HOME/.config/git"
+if [ -d "$GIT_CONFIG_SRC" ]; then
+    cp -r "$GIT_CONFIG_SRC/." "$GIT_CONFIG_DEST/"
+    echo "Git configuration copied to $GIT_CONFIG_DEST"
+else
+    echo "Warning: Git config not found at $GIT_CONFIG_SRC — skipping."
+fi
+
+# Copy Ghostty configuration
+GHOSTTY_CONFIG_SRC="$SCRIPT_DIR/../config/ghostty"
+GHOSTTY_CONFIG_DEST="$HOME/.config/ghostty"
+if [ -d "$GHOSTTY_CONFIG_SRC" ]; then
+    mkdir -p "$GHOSTTY_CONFIG_DEST"
+    cp -r "$GHOSTTY_CONFIG_SRC/." "$GHOSTTY_CONFIG_DEST/"
+    echo "Ghostty configuration copied to $GHOSTTY_CONFIG_DEST"
+else
+    echo "Warning: Ghostty config not found at $GHOSTTY_CONFIG_SRC — skipping."
+fi
+
+# Copy OpenCode configuration
+OPENCODE_CONFIG_SRC="$SCRIPT_DIR/../config/opencode"
+OPENCODE_CONFIG_DEST="$HOME/.config/opencode"
+if [ -d "$OPENCODE_CONFIG_SRC" ]; then
+    mkdir -p "$OPENCODE_CONFIG_DEST"
+    cp -r "$OPENCODE_CONFIG_SRC/." "$OPENCODE_CONFIG_DEST/"
+    echo "OpenCode configuration copied to $OPENCODE_CONFIG_DEST"
+else
+    echo "Warning: OpenCode config not found at $OPENCODE_CONFIG_SRC — skipping."
+fi
 
 # ── 7. Web Development Tools (Optional - Omarchy Style) ───────────────────────
 # Postman and Insomnia for APIs
