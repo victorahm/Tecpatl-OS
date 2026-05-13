@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# omarchy:summary=Install packages if they are missing
+# omarchy:args=<packages...>
+# omarchy:examples=omarchy pkg add jq ripgrep
+# omarchy:requires-sudo=true
+
+os_type=$(omarchy-os-detect)
+
+if omarchy-pkg-missing "$@"; then
+  if [[ "$os_type" == "fedora" ]]; then
+    sudo dnf install -y "$@" || exit 1
+  else
+    sudo pacman -S --noconfirm --needed "$@" || exit 1
+  fi
+fi
+
+for pkg in "$@"; do
+  # Secondary check to handle states where the package manager doesn't actually register an error
+  if [[ "$os_type" == "fedora" ]]; then
+    if ! rpm -q "$pkg" &>/dev/null; then
+      echo -e "\033[31mError: Package '$pkg' did not install\033[0m" >&2
+      exit 1
+    fi
+  else
+    if ! pacman -Q "$pkg" &>/dev/null; then
+      echo -e "\033[31mError: Package '$pkg' did not install\033[0m" >&2
+      exit 1
+    fi
+  fi
+done
+
+exit 0

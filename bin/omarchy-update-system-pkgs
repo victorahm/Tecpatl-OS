@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# omarchy:summary=Update system packages
+# omarchy:requires-sudo=true
+
+set -e
+
+os_type=$(omarchy-os-detect)
+
+echo -e "\e[32m\nUpdate system packages\e[0m"
+
+if [[ "$os_type" == "fedora" ]]; then
+  sudo dnf update -y
+else
+  sudo pacman -Syyu --noconfirm
+fi

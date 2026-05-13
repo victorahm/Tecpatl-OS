@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [[ -f /etc/os-release ]]; then
+    . /etc/os-release
+    if [[ "$ID" == "fedora" || "$ID_LIKE" == *"fedora"* ]]; then
+        echo "fedora"
+    elif [[ "$ID" == "arch" || "$ID_LIKE" == *"arch"* ]]; then
+        echo "arch"
+    else
+        echo "unknown"
+    fi
+else
+    echo "unknown"
+fi

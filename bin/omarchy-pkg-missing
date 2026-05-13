@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# omarchy:summary=Returns true if any of the named packages are missing from the system (or false if they're all there).
+# omarchy:args=<packages...>
+
+os_type=$(omarchy-os-detect)
+
+for pkg in "$@"; do
+  if [[ "$os_type" == "fedora" ]]; then
+    if ! rpm -q "$pkg" &>/dev/null; then
+      exit 0
+    fi
+  else
+    if ! pacman -Q "$pkg" &>/dev/null; then
+      exit 0
+    fi
+  fi
+done
+
+exit 1

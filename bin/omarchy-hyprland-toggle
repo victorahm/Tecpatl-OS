@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# omarchy:summary=Toggle permanent Hyprland flags by copying them into a directory that's sourced entirely.
+# omarchy:args=<flag-name> [on|off]
+
+FLAG_NAME="$1"
+ACTION="${2:-toggle}"
+FLAG="$HOME/.local/state/omarchy/toggles/hypr/$FLAG_NAME.conf"
+FLAG_SOURCE="$OMARCHY_PATH/default/hypr/toggles/$FLAG_NAME.conf"
+
+on() {
+  if [[ -f $FLAG_SOURCE ]]; then
+    mkdir -p "$(dirname "$FLAG")"
+    cp "$FLAG_SOURCE" "$FLAG"
+  else
+    echo "Flag not found: $FLAG_NAME"
+    exit 1
+  fi
+}
+
+off() {
+  rm -f "$FLAG"
+}
+
+toggle() {
+  if [[ -f $FLAG ]]; then
+    off
+    echo "off"
+  else
+    on
+    echo "on"
+  fi
+}
+
+case $ACTION in
+  on) on ;;
+  off) off ;;
+  toggle) toggle ;;
+  *)
+    echo "Usage: omarchy-hyprland-toggle <flag-name> [on|off]"
+    exit 1
+    ;;
+esac
+
+hyprctl reload >/dev/null
