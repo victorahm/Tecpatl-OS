@@ -7,8 +7,9 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 echo "Installing Hyprland environment (Tecpatl-OS)..."
 
+sudo dnf copr enable lionheartp/Hyprland 
 # 1. Install core Hyprland and Wayland packages on Fedora
-sudo dnf install -y hyprland waybar mako starship \
+sudo dnf install -y hyprland hyprpaper hyprlock hypridle xdg-desktop-portal-hyprland waybar mako starship \
   wl-clipboard grim slurp swappy \
   brightnessctl playerctl nwg-look \
   kitty ghostty
@@ -34,6 +35,10 @@ echo "Copying configurations from repository: $REPO_DIR"
 echo "Installing themes..."
 mkdir -p ~/.config/omarchy/themes
 [ -d "$REPO_DIR/themes" ] && cp -r "$REPO_DIR/themes/"* ~/.config/omarchy/themes/
+
+echo "Installing defaults..."
+mkdir -p ~/.local/share/omarchy/default
+[ -d "$REPO_DIR/default" ] && cp -r "$REPO_DIR/default/"* ~/.local/share/omarchy/default/
 
 # 6. Install custom scripts to user bin
 echo "Installing custom scripts to ~/bin..."
