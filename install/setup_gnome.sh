@@ -203,6 +203,29 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/or
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ binding '<Control>space'
 
 # ── 7. Office & Cloud Applications ───────────────────────────────────────────
+echo "Setting up third-party repositories for sync applications..."
+
+# 1. Enable RPM Fusion Free and Nonfree repositories (required for nautilus-dropbox)
+if ! rpm -q rpmfusion-nonfree-release >/dev/null 2>&1; then
+  echo "Installing RPM Fusion Free and Nonfree repositories..."
+  sudo dnf install -y \
+    https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+fi
+
+# 2. Add MEGA repository (required for megasync and nautilus-megasync)
+if [ ! -f /etc/yum.repos.d/megasync.repo ]; then
+  echo "Adding MEGA repository..."
+  sudo tee /etc/yum.repos.d/megasync.repo << 'EOF'
+[MEGAsync]
+name=MEGAsync
+baseurl=https://mega.nz/linux/repo/Fedora_$releasever/
+gpgkey=https://mega.nz/linux/repo/Fedora_$releasever/repodata/repomd.xml.key
+gpgcheck=1
+enabled=1
+EOF
+fi
+
 echo "Installing communication and sync applications..."
 sudo dnf install -y thunderbird ulauncher megasync nautilus-megasync nautilus-dropbox
 flatpak install flathub io.gitlab.librewolf-community com.opera.Opera -y
