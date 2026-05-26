@@ -226,8 +226,52 @@ enabled=1
 EOF
 fi
 
+# 3. Add Remember The Milk repository
+if [ ! -f /etc/yum.repos.d/rememberthemilk.repo ]; then
+  echo "Adding Remember The Milk repository..."
+  sudo tee /etc/yum.repos.d/rememberthemilk.repo << 'EOF'
+[rememberthemilk]
+name=rememberthemilk
+baseurl=https://www.rememberthemilk.com/download/linux/fedora/21/x86_64
+enabled=1
+gpgcheck=1
+gpgkey=https://www.rememberthemilk.com/download/rememberthemilk-pkg.asc
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+EOF
+fi
+
+# 4. Add Terra repository
+if [ ! -f /etc/yum.repos.d/terra.repo ]; then
+  echo "Adding Terra repository..."
+  sudo tee /etc/yum.repos.d/terra.repo << 'EOF'
+[terra]
+name=Terra $releasever
+metalink=https://tetsudou.fyralabs.com/metalink?repo=terra$releasever&arch=$basearch
+metadata_expire=6h
+type=rpm
+gpgcheck=1
+gpgkey=https://repos.fyralabs.com/terra$releasever/key.asc
+repo_gpgcheck=1
+enabled=1
+enabled_metadata=1
+countme=1
+
+[terra-source]
+name=Terra $releasever - Source
+metalink=https://tetsudou.fyralabs.com/metalink?repo=terra$releasever-source&arch=$basearch
+metadata_expire=6h
+type=rpm
+gpgcheck=1
+gpgkey=https://repos.fyralabs.com/terra$releasever-source/key.asc
+repo_gpgcheck=1
+enabled=0
+enabled_metadata=0
+EOF
+fi
+
 echo "Installing communication and sync applications..."
-sudo dnf install -y thunderbird ulauncher megasync nautilus-megasync nautilus-dropbox
+sudo dnf install -y thunderbird ulauncher megasync nautilus-megasync nautilus-dropbox rememberthemilk
 flatpak install flathub io.gitlab.librewolf-community com.opera.Opera -y
 
 # ── 8. Flatpak Theme Overrides ───────────────────────────────────────────────
