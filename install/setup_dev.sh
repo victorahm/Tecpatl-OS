@@ -81,6 +81,7 @@ flatpak install flathub io.github.qwersyk.Newelle -y  # Newelle [24]
 # Claude Code and Gemini CLI (usually require Node.js/NPM)
 sudo dnf install -y nodejs npm
 sudo npm install -g @anthropic-ai/claude-code # Claude Code [21]
+sudo npm install -g @google/gemini-cli       # Gemini CLI
 
 # ── 5. Neovim Configuration (LazyVim for Ruby on Rails) ───────────────────────
 if [ ! -d "$HOME/.config/nvim" ]; then
@@ -155,6 +156,41 @@ fi
 # ── 7. Web Development Tools (Optional - Omarchy Style) ───────────────────────
 # Postman and Insomnia for APIs
 flatpak install flathub com.getpostman.Postman rest.insomnia.Insomnia -y # [22, 28]
+
+# ── Firefox Developer Edition ───────────────────────────────────────────────────
+echo "Installing Firefox Developer Edition..."
+FF_DEV_URL="https://download.mozilla.org/?product=firefox-devedition-latest-ssl&os=linux64&lang=en-US"
+FF_DEV_TAR="/tmp/firefox-developer.tar.xz"
+FF_DEV_DIR="/opt/firefox-developer"
+
+echo "Downloading Firefox Developer Edition..."
+curl -L -o "$FF_DEV_TAR" "$FF_DEV_URL"
+
+echo "Extracting Firefox Developer Edition to $FF_DEV_DIR..."
+sudo rm -rf "$FF_DEV_DIR"
+sudo mkdir -p "$FF_DEV_DIR"
+sudo tar -xf "$FF_DEV_TAR" -C "$FF_DEV_DIR" --strip-components=1
+rm -f "$FF_DEV_TAR"
+
+# Create symbolic link
+sudo ln -sf "$FF_DEV_DIR/firefox" /usr/local/bin/firefox-developer
+
+# Create GNOME desktop entry
+echo "Creating GNOME desktop shortcut for Firefox Developer Edition..."
+sudo tee /usr/share/applications/firefox-developer.desktop << 'EOL'
+[Desktop Entry]
+Name=Firefox Developer Edition
+GenericName=Web Browser
+Comment=Browse the World Wide Web
+Exec=/opt/firefox-developer/firefox %u
+Terminal=false
+Type=Application
+Icon=/opt/firefox-developer/browser/chrome/icons/default/default128.png
+Categories=GNOME;GTK;Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+StartupWMClass=firefox-aurora
+EOL
 
 echo "Development setup completed."
 echo "NOTE: A reboot is recommended to fully load VirtualBox kernel modules."

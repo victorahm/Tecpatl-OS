@@ -7,7 +7,7 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 echo "Installing Hyprland environment (Tecpatl-OS)..."
 
-sudo dnf copr enable lionheartp/Hyprland 
+sudo dnf copr enable -y lionheartp/Hyprland 
 # 1. Install core Hyprland and Wayland packages on Fedora
 sudo dnf install -y hyprland hyprpaper hyprlock hypridle xdg-desktop-portal-hyprland waybar mako starship \
   wl-clipboard grim slurp swappy \

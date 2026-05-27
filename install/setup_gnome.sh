@@ -50,7 +50,7 @@ GEXT_EXTENSIONS=(
 
 for ext in "${GEXT_EXTENSIONS[@]}"; do
   echo "  Installing: $ext"
-  gext install --filesystem "$ext" || echo "  Warning: Failed to install $ext — skipping."
+  gext --filesystem install "$ext" || echo "  Warning: Failed to install $ext — skipping."
 done
 
 # ── 4. Enable All Extensions ──────────────────────────────────────────────────
@@ -236,8 +236,6 @@ baseurl=https://www.rememberthemilk.com/download/linux/fedora/21/x86_64
 enabled=1
 gpgcheck=1
 gpgkey=https://www.rememberthemilk.com/download/rememberthemilk-pkg.asc
-sslverify=1
-sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 EOF
 fi
 
@@ -272,11 +270,5 @@ fi
 
 echo "Installing communication and sync applications..."
 sudo dnf install -y thunderbird ulauncher megasync nautilus-megasync nautilus-dropbox rememberthemilk
-flatpak install flathub io.gitlab.librewolf-community com.opera.Opera -y
-
-# ── 8. Flatpak Theme Overrides ───────────────────────────────────────────────
-# Force GNOME themes in Flatpak apps for visual consistency
-flatpak override --user --filesystem=$HOME/.themes
-flatpak override --user --filesystem=$HOME/.icons
 
 echo "GNOME configuration completed. A session restart is recommended."
