@@ -20,13 +20,30 @@ sudo dnf install -y gnome-tweaks gnome-extensions-app dconf-editor pipx \
   gnome-shell-extension-window-list \
   gnome-shell-extension-apps-menu
 
-# ── 2. Install gnome-extensions-cli via pipx ───────────────────────────────────
+# ── 2. Install Dynamic Wallpapers ──────────────────────────────────────────────
+echo "Installing dynamic wallpapers..."
+
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# Ensure system directories exist
+sudo mkdir -p /usr/share/backgrounds/gnome
+sudo mkdir -p /usr/share/gnome-background-properties
+
+# Copy wallpaper images and XML definitions to system backgrounds
+sudo cp -r "$REPO_DIR/default/backgrounds/gnome/"* /usr/share/backgrounds/gnome/
+
+# Copy properties files so GNOME Settings shows the wallpapers
+sudo cp "$REPO_DIR/default/gnome-background-properties/"*.xml /usr/share/gnome-background-properties/
+
+echo "Dynamic wallpapers installed."
+
+# ── 3. Install gnome-extensions-cli via pipx ───────────────────────────────────
 echo "Installing gnome-extensions-cli (gext) via pipx..."
 pipx install gnome-extensions-cli 2>/dev/null || pipx upgrade gnome-extensions-cli 2>/dev/null || true
 # Ensure pipx bin dir is on PATH for this session
 export PATH="$HOME/.local/bin:$PATH"
 
-# ── 3. Install Non-DNF Extensions via gext ─────────────────────────────────────
+# ── 4. Install Non-DNF Extensions via gext ─────────────────────────────────────
 echo "Installing extensions from extensions.gnome.org via gext..."
 
 GEXT_EXTENSIONS=(
@@ -53,7 +70,7 @@ for ext in "${GEXT_EXTENSIONS[@]}"; do
   gext --filesystem install "$ext" || echo "  Warning: Failed to install $ext — skipping."
 done
 
-# ── 4. Enable All Extensions ──────────────────────────────────────────────────
+# ── 5. Enable All Extensions ──────────────────────────────────────────────────
 echo "Enabling all extensions..."
 
 ALL_EXTENSIONS=(
@@ -89,7 +106,7 @@ for ext in "${ALL_EXTENSIONS[@]}"; do
   gnome-extensions enable "$ext" 2>/dev/null || echo "  Note: Could not enable $ext (GNOME Shell may not be running)."
 done
 
-# ── 5. macOS-Style Keyboard Shortcuts ─────────────────────────────────────────
+# ── 6. macOS-Style Keyboard Shortcuts ─────────────────────────────────────────
 # Using Super as the equivalent of macOS Cmd key
 echo "Applying macOS-style keyboard shortcuts..."
 
@@ -172,7 +189,7 @@ gsettings set org.gnome.shell.keybindings toggle-overview "['<Super>z']"
 # --- Monitor Switching ---
 gsettings set org.gnome.mutter.keybindings switch-monitor "['<Super>p', 'XF86Display']"
 
-# ── 6. Custom Keybindings ─────────────────────────────────────────────────────
+# ── 7. Custom Keybindings ─────────────────────────────────────────────────────
 echo "Setting up custom keyboard shortcuts..."
 
 # Register custom keybinding paths
