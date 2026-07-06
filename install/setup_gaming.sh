@@ -1,6 +1,5 @@
 #!/bin/bash
-# Drivers de video Nvidia y capas de compatibilidad
-sudo dnf install -y akmod-nvidia xorg-x11-drv-nvidia-cuda
+
 sudo dnf install -y steam mangohud gamescope
 
 # Launchers y herramientas de optimización (Flatpak y RPM)

@@ -22,6 +22,9 @@ sudo dnf copr enable -y dejan/lazygit
 # Lazydocker — COPR by atim
 sudo dnf copr enable -y atim/lazydocker
 
+# Mise - COPR by jdxcode
+sudo dnf copr enable -y jdxcode/mise
+
 # Warp Terminal — official RPM repository
 sudo rpm --import https://releases.warp.dev/linux/keys/warp.asc
 sudo sh -c 'echo -e "[warpdotdev]\nname=warpdotdev\nbaseurl=https://releases.warp.dev/linux/rpm/stable\nenabled=1\ngpgcheck=1\ngpgkey=https://releases.warp.dev/linux/keys/warp.asc" > /etc/yum.repos.d/warpdotdev.repo'
@@ -92,11 +95,7 @@ fi
 
 # ── 3. Containers and Virtualization ──────────────────────────────────────────
 sudo dnf install -y podman podman-compose docker-compose \
-  distrobox toolbox gnome-boxes \
-  VirtualBox akmod-VirtualBox
-
-# Add current user to the vboxusers group
-sudo usermod -a -G vboxusers "$USER"
+  distrobox toolbox gnome-boxes
 
 # ── 4. AI Agents (Flatpak and CLI) ────────────────────────────────────────────
 sudo dnf install -y antigravity
@@ -106,7 +105,7 @@ flatpak install flathub io.github.qwersyk.Newelle -y # Newelle [24]
 # Claude Code and Gemini CLI (usually require Node.js/NPM)
 sudo dnf install -y nodejs npm
 curl -fsSL https://claude.ai/install.sh | bash # Claude Code [21]
-sudo npm install -g @google/gemini-cli        # Gemini CLI
+sudo npm install -g @google/gemini-cli         # Gemini CLI
 # Install Claude Desktop
 sudo curl -fsSL https://pkg.claude-desktop-debian.dev/rpm/claude-desktop.repo -o /etc/yum.repos.d/claude-desktop.repo
 sudo dnf install claude-desktop -y

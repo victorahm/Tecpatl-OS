@@ -9,10 +9,9 @@ echo "Installing Hyprland environment (Tecpatl-OS)..."
 
 sudo dnf copr enable -y lionheartp/Hyprland 
 # 1. Install core Hyprland and Wayland packages on Fedora
-sudo dnf install -y hyprland hyprpaper hyprlock hypridle xdg-desktop-portal-hyprland waybar mako starship \
+sudo dnf install -y hyprland hyprpaper hyprlock hypridle xdg-desktop-portal-hyprland waybar mako \
   wl-clipboard grim slurp swappy \
-  brightnessctl playerctl nwg-look \
-  kitty ghostty
+  brightnessctl playerctl nwg-look
 
 # 2. Install Walker (Launcher and Clipboard manager)
 # Walker may require installation via Go or a specific COPR repository on Fedora.

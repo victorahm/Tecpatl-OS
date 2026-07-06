@@ -1,18 +1,40 @@
 #!/bin/bash
 # Misión: "El pedernal que forja el código y corta el lag" [1]
 
+SKIP_NVIDIA=false
+SKIP_VIRTUALBOX=false
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+  --skip-nvidia)
+    SKIP_NVIDIA=true
+    shift
+    ;;
+  --skip-virtualbox)
+    SKIP_VIRTUALBOX=true
+    shift
+    ;;
+  *)
+    echo "Opción desconocida: $1"
+    exit 1
+    ;;
+  esac
+done
+
 echo "Iniciando instalación de Tecpatl-OS..."
 
 chmod +x install/setup_*.sh
 
-./install/setup_system.sh
+SYSTEM_FLAGS=""
+$SKIP_NVIDIA && SYSTEM_FLAGS+=" --skip-nvidia"
+$SKIP_VIRTUALBOX && SYSTEM_FLAGS+=" --skip-virtualbox"
+./install/setup_system.sh$SYSTEM_FLAGS
 ./install/setup_gnome.sh
 ./install/setup_gaming.sh
 ./install/setup_hyprland.sh
 ./install/setup_dev.sh
 ./install/setup_flatpaks.sh
 
-cat << 'EOF' > /usr/local/bin/update-tecpatl
+cat <<'EOF' >/usr/local/bin/update-tecpatl
 #!/bin/bash
 echo "--- Starting Tecpatl-OS Update ---"
 
@@ -64,6 +86,5 @@ echo "--- System Successfully Updated ---"
 EOF
 
 chmod +x /usr/local/bin/update-tecpatl
-
 
 echo "Instalación completada. Reinicie para aplicar todos los cambios."

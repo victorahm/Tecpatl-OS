@@ -55,11 +55,23 @@ if [ ! -f /etc/yum.repos.d/terra.repo ]; then
   sudo dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
 fi
 
-# echo "Installing NVidia drivers..."
-# sudo dnf install -y kmodtool akmods mokutil openssl
-# sudo kmodgenca -a
-# sudo mokutil --import /etc/pki/akmods/certs/public_key.der
-# sudo dnf install -y akmod-nvidia xorg-x11-drv-nvidia-cuda
+SKIP_NVIDIA=false
+SKIP_VIRTUALBOX=false
+for arg in "$@"; do
+  [[ "$arg" == "--skip-nvidia" ]] && SKIP_NVIDIA=true
+  [[ "$arg" == "--skip-virtualbox" ]] && SKIP_VIRTUALBOX=true
+done
+
+if [ "$SKIP_NVIDIA" = false ]; then
+  echo "Installing NVidia drivers..."
+  sudo dnf install -y akmod-nvidia xorg-x11-drv-nvidia-cuda
+fi
+
+if [ "$SKIP_VIRTUALBOX" = false ]; then
+  echo "Installing VirtualBox..."
+  sudo dnf install -y VirtualBox akmod-VirtualBox
+  sudo usermod -a -G vboxusers "$USER"
+fi
 
 echo "Installing Media Codecs..."
 sudo dnf4 group install -y multimedia
@@ -86,7 +98,7 @@ echo "Disable Gnome Software from Startup Apps..."
 sudo rm /etc/xdg/autostart/org.gnome.Software.desktop
 
 echo "Installing applications..."
-sudo dnf install -y unzip p7zip p7zip-plugins unrar arj file-roller
+sudo dnf install -y unzip p7zip p7zip-plugins unrar arj file-roller thunar
 
 echo "Installing communication and sync applications..."
 sudo dnf install -y thunderbird ulauncher megasync nautilus-megasync nautilus-dropbox rememberthemilk
