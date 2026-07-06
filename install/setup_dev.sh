@@ -29,15 +29,6 @@ sudo dnf copr enable -y jdxcode/mise
 sudo rpm --import https://releases.warp.dev/linux/keys/warp.asc
 sudo sh -c 'echo -e "[warpdotdev]\nname=warpdotdev\nbaseurl=https://releases.warp.dev/linux/rpm/stable\nenabled=1\ngpgcheck=1\ngpgkey=https://releases.warp.dev/linux/keys/warp.asc" > /etc/yum.repos.d/warpdotdev.repo'
 
-# Antigravity — official RPM repository
-sudo tee /etc/yum.repos.d/antigravity.repo <<EOL
-[antigravity-rpm]
-name=Antigravity RPM Repository
-baseurl=https://us-central1-yum.pkg.dev/projects/antigravity-auto-updater-dev/antigravity-rpm
-enabled=1
-gpgcheck=0
-EOL
-
 # Visual Studio Code — official Microsoft RPM repository
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo >/dev/null
@@ -98,7 +89,87 @@ sudo dnf install -y podman podman-compose docker-compose \
   distrobox toolbox gnome-boxes
 
 # ── 4. AI Agents (Flatpak and CLI) ────────────────────────────────────────────
-sudo dnf install -y antigravity
+# Antigravity 2.0 (hub) — latest tarball from official releases
+ANTIGRAVITY_URL="https://storage.googleapis.com/antigravity-public/antigravity-hub/2.2.1-5287492581195776/linux-x64/Antigravity.tar.gz"
+ANTIGRAVITY_TAR="/tmp/antigravity.tar.gz"
+ANTIGRAVITY_DIR="/opt/antigravity"
+
+echo "Downloading Antigravity..."
+curl -L -o "$ANTIGRAVITY_TAR" "$ANTIGRAVITY_URL"
+
+echo "Extracting Antigravity to $ANTIGRAVITY_DIR..."
+sudo rm -rf "$ANTIGRAVITY_DIR"
+sudo mkdir -p "$ANTIGRAVITY_DIR"
+sudo tar -xf "$ANTIGRAVITY_TAR" -C "$ANTIGRAVITY_DIR" --strip-components=1
+rm -f "$ANTIGRAVITY_TAR"
+
+# Create symbolic link
+sudo ln -sf "$ANTIGRAVITY_DIR/antigravity" /usr/local/bin/antigravity
+
+# Find and install icon
+ICON_SRC=$(find "$ANTIGRAVITY_DIR" -name "*.png" -path "*/icons/*" 2>/dev/null | head -1)
+if [ -z "$ICON_SRC" ]; then
+  ICON_SRC=$(find "$ANTIGRAVITY_DIR" -name "icon.png" -o -name "logo.png" 2>/dev/null | head -1)
+fi
+if [ -n "$ICON_SRC" ]; then
+  sudo mkdir -p /usr/share/icons/hicolor/512x512/apps
+  sudo cp "$ICON_SRC" /usr/share/icons/hicolor/512x512/apps/antigravity.png
+fi
+
+# Create GNOME desktop entry
+echo "Creating GNOME desktop shortcut for Antigravity..."
+sudo tee /usr/share/applications/antigravity.desktop <<'EOL'
+[Desktop Entry]
+Name=Antigravity
+Comment=AI-powered IDE from Google
+Exec=/opt/antigravity/antigravity %F
+Terminal=false
+Type=Application
+Icon=antigravity
+Categories=Development;IDE;
+StartupNotify=true
+EOL
+
+# Antigravity IDE (VS Code fork) — latest tarball from official releases
+AGIDE_URL="https://edgedl.me.gvt1.com/edgedl/release2/j0qc3/antigravity/stable/2.1.1-6123990880747520/linux-x64/Antigravity%20IDE.tar.gz"
+AGIDE_TAR="/tmp/antigravity-ide.tar.gz"
+AGIDE_DIR="/opt/antigravity-ide"
+
+echo "Downloading Antigravity IDE..."
+curl -L -o "$AGIDE_TAR" "$AGIDE_URL"
+
+echo "Extracting Antigravity IDE to $AGIDE_DIR..."
+sudo rm -rf "$AGIDE_DIR"
+sudo mkdir -p "$AGIDE_DIR"
+sudo tar -xf "$AGIDE_TAR" -C "$AGIDE_DIR" --strip-components=1
+rm -f "$AGIDE_TAR"
+
+# Create symbolic link
+sudo ln -sf "$AGIDE_DIR/antigravity" /usr/local/bin/antigravity-ide
+
+# Find and install icon
+AGIDE_ICON=$(find "$AGIDE_DIR" -name "*.png" -path "*/icons/*" 2>/dev/null | head -1)
+if [ -z "$AGIDE_ICON" ]; then
+  AGIDE_ICON=$(find "$AGIDE_DIR" -name "icon.png" -o -name "logo.png" 2>/dev/null | head -1)
+fi
+if [ -n "$AGIDE_ICON" ]; then
+  sudo mkdir -p /usr/share/icons/hicolor/512x512/apps
+  sudo cp "$AGIDE_ICON" /usr/share/icons/hicolor/512x512/apps/antigravity-ide.png
+fi
+
+# Create GNOME desktop entry
+echo "Creating GNOME desktop shortcut for Antigravity IDE..."
+sudo tee /usr/share/applications/antigravity-ide.desktop <<'EOL'
+[Desktop Entry]
+Name=Antigravity IDE
+Comment=AI-powered VS Code fork from Google
+Exec=/opt/antigravity-ide/antigravity %F
+Terminal=false
+Type=Application
+Icon=antigravity-ide
+Categories=Development;IDE;
+StartupNotify=true
+EOL
 flatpak install flathub ai.opencode.opencode -y      # OpenCode [21, 22]
 flatpak install flathub io.github.qwersyk.Newelle -y # Newelle [24]
 
