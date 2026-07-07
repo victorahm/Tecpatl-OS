@@ -1,18 +1,31 @@
 # Dynamic theme colors
 config-file = ?"~/.config/omarchy/current/theme/ghostty.conf"
 
+quit-after-last-window-closed = true
+
+clipboard-read = allow
+clipboard-write = allow
+
 # Font
-font-family = "JetBrainsMono Nerd Font"
+font-family = "Agave Nerd Font"
 font-style = Regular
-font-size = 9
+font-size = 10
+bold-is-bright = true
 
 # Window
 window-theme = ghostty
 window-padding-x = 14
 window-padding-y = 14
+window-height = 40
+window-width = 160
+
 confirm-close-surface=false
 resize-overlay = never
 gtk-toolbar-style = flat
+
+# Theme 
+background-opacity = 0.9
+theme = Night Owl 
 
 # Cursor styling
 cursor-style = "block"
