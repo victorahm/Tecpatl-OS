@@ -44,7 +44,7 @@ sudo dnf install -y ghostty warp-terminal
 # Common shell improvements from Omarchy + VS Code
 sudo dnf install -y neovim fish starship fastfetch \
   fzf ripgrep zoxide lazygit lazydocker \
-  eza bat fd-find mise code # Visual Studio Code
+  eza bat fd-find mise code gh # Visual Studio Code + GitHub CLI
 
 # Set fish as the default shell for the current user
 echo "Setting fish as default shell..."

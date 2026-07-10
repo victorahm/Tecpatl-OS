@@ -1,6 +1,7 @@
 #!/bin/bash
 
-sudo dnf install -y steam mangohud gamescope
+sudo dnf install -y steam mangohud gamescope aisleriot brutalchess dreamchess extremetuxracer gnome-2048 gnome-chess gnome-mahjongg \
+  gnome-mines minetest pychess stockfish
 
 # Launchers y herramientas de optimización (Flatpak y RPM)
 flatpak install flathub com.github.Matoking.protontricks com.vysp3r.ProtonPlus -y

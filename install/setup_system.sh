@@ -104,4 +104,7 @@ echo "Installing communication and sync applications..."
 sudo dnf install -y thunderbird ulauncher megasync nautilus-megasync nautilus-dropbox rememberthemilk
 
 echo "Installing games and applications..."
-sudo dnf install -y aisleriot baobab blender brutalchess chromium clamav cowsay deja-dup dreamchess dropbox extremetuxracer eza gimp gnome-2048 gnome-browser-connector gnome-chess gnome-contacts gnome-epub-thumbnailer gnome-mahjongg gnome-maps gnome-mines gnome-pomodoro gnome-sudoku gnome-taquin gnome-todo gnucash gnuchess hplip hplip-gui iagno inkscape jpilot keepassxc kile langpacks-es libdbi-dbd-sqlite libreoffice-data libreoffice-draw libreoffice-impress libreoffice-langpack-es libreoffice-pdfimport libreoffice-writer lshw lshw-gui megaglest minetest nautilus-gsconnect pychess stockfish strawberry Thunar thunar-archive-plugin thunar-media-tags-plugin thunar-vcs-plugin thunar-volman tomboy transmission trash-cli vlc cheat-community-cheatsheets cheat-fish-completion eza-bash-completion
+sudo dnf install -y baobab blender chromium clamav cowsay deja-dup dropbox eza gimp \
+  gnome-browser-connector gnome-contacts gnome-epub-thumbnailer gnome-maps gnome-pomodoro \
+  nautilus-gsconnect strawberry Thunar thunar-archive-plugin thunar-media-tags-plugin thunar-vcs-plugin thunar-volman \
+  tomboy transmission trash-cli vlc cheat-community-cheatsheets cheat-fish-completion eza-bash-completion
